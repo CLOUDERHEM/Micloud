@@ -18,6 +18,6 @@ func TestRenewal(t *testing.T) {
 		t.Error(err)
 	}
 	if renewal == "" {
-		t.Error("no status found")
+		t.Error("no cookie found")
 	}
 }

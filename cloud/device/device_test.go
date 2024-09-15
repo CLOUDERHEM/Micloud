@@ -1,4 +1,4 @@
-package setting
+package device
 
 import "testing"
 

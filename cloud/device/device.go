@@ -1,7 +1,7 @@
-package setting
+package device
 
 import (
-	"io.github.clouderhem.micloud/cloud/setting/device"
+	"io.github.clouderhem.micloud/cloud/device/device"
 )
 
 // ListDevices list all devices logged in with current xiaomi account
