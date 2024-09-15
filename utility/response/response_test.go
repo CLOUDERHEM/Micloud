@@ -40,15 +40,8 @@ func TestParse(t *testing.T) {
 
 func TestParseNoData(t *testing.T) {
 	s := "{\"result\":\"ok\",\"retriable\":false,\"code\":-1,\"data\":\"\",\"description\":\"成功\",\"ts\":123}"
-	devices, err := Parse[Devices]([]byte(s))
-	if err != nil {
-		t.Error(err)
-	}
-
-	if len(devices.Data.List) != 1 {
-		t.Error()
-	}
-	if devices.Data.List[0].DevId != "devId" {
-		t.Error()
+	_, err := Parse[Devices]([]byte(s))
+	if err == nil {
+		t.Error("it should return error")
 	}
 }

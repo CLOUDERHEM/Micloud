@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/tidwall/gjson"
 	"log"
+	"reflect"
 )
 
 type Response[T any] struct {
@@ -26,10 +27,11 @@ func Parse[T any](body []byte) (Response[T], error) {
 		var t T
 		err := json.Unmarshal([]byte(data.Raw), &t)
 		if err != nil {
-			log.Printf("cannot unmarshal r data, data: %v, err: %v", data.Raw, err)
-		} else {
-			r.Data = t
+			log.Printf("cannot unmarshal data in response, tpye: %v, err: %v, rawData:%v",
+				reflect.TypeOf(t).String(), err, data.Raw)
+			return r, err
 		}
+		r.Data = t
 	}
 
 	return r, nil
