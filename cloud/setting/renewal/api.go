@@ -3,7 +3,8 @@ package renewal
 import (
 	"errors"
 	"fmt"
-	"io.github.clouderhem.micloud/authorizer"
+	"io.github.clouderhem.micloud/authorizer/cookie"
+	"io.github.clouderhem.micloud/utility/request"
 	"net/http"
 	"strings"
 	"time"
@@ -13,12 +14,13 @@ const (
 	renewalApi = "https://i.mi.com/status/lite/setting?type=AutoRenewal&inactiveTime=10&ts=%v"
 )
 
-func Renewal() (cookie string, err error) {
+func Renewal() (string, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf(renewalApi, time.Now().UnixMilli()), nil)
 	if err != nil {
 		return "", err
 	}
-	_, r, err := authorizer.DoRequest(req)
+	req.Header.Add("Cookie", cookie.GetCookie())
+	_, r, err := request.DoRequest(req)
 	if err != nil {
 		return "", err
 	}

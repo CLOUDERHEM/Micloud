@@ -1,10 +1,13 @@
-package authorizer
+package cookie
 
 import (
 	"log"
 	"os"
 	"strings"
+	"sync"
 )
+
+var lock sync.Mutex
 
 const (
 	CookieFilePath = "/tmp/micloud/.micloud_cookie"
@@ -31,10 +34,12 @@ func GetCookie() string {
 }
 
 func SetCookie(s string) {
+	lock.Lock()
 	err := os.WriteFile(CookieFilePath, []byte(s), 0644)
 	if err != nil {
 		log.Printf("can not create cookie file: %v", err)
 	}
+	lock.Unlock()
 }
 
 func readCookieFile() string {

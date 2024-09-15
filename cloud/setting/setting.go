@@ -1,7 +1,6 @@
 package setting
 
 import (
-	"io.github.clouderhem.micloud/authorizer"
 	"io.github.clouderhem.micloud/cloud/setting/detail"
 	"io.github.clouderhem.micloud/cloud/setting/device"
 	"io.github.clouderhem.micloud/cloud/setting/renewal"
@@ -23,6 +22,5 @@ func Renewal() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	authorizer.SetCookie(cookie)
 	return cookie, err
 }

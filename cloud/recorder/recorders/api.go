@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
+	"io.github.clouderhem.micloud/authorizer/cookie"
 	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
 	"io.github.clouderhem.micloud/utility/response"
@@ -81,7 +82,7 @@ func DeleteRecorder(id string) error {
 		"application/x-www-form-urlencoded; charset=UTF-8")
 	_ = req.ParseForm()
 	req.Form.Add("permanent", "false")
-	req.Form.Add("serviceToken", authorizer.GetCookieByName("serviceToken"))
+	req.Form.Add("serviceToken", cookie.GetCookieByName("serviceToken"))
 
 	body, r, err := authorizer.DoRequest(req)
 	if err != nil {
