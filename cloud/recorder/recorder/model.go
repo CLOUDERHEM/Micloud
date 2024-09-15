@@ -1,4 +1,4 @@
-package recorders
+package recorder
 
 type Recorder struct {
 	Id       string `json:"id"`

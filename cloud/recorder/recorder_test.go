@@ -10,7 +10,7 @@ func TestListRecorders(t *testing.T) {
 		t.Error(err)
 	}
 	if len(recorders) == 0 {
-		t.Error("no recorders")
+		t.Error("no recorder")
 	}
 }
 
