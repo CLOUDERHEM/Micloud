@@ -5,6 +5,7 @@ import (
 	"io.github.clouderhem.micloud/cloud/setting/renewal"
 	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
+	"log"
 	"net/http"
 )
 
@@ -18,13 +19,15 @@ func DoRequest(req *http.Request) ([]byte, *http.Response, error) {
 		if err != nil {
 			continue
 		}
+		c, err := renewal.Renewal()
+		if err != nil || c == "" {
+			log.Print("cannot renewal cookie, err: ", err)
+			return body, resp, err
+		} else {
+			cookie.SetCookie(c)
+		}
 		if resp.StatusCode == http.StatusUnauthorized {
-			c, err := renewal.Renewal()
-			if err != nil {
-				return body, resp, err
-			} else {
-				cookie.SetCookie(c)
-			}
+			continue
 		}
 		break
 	}
