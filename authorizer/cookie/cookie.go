@@ -34,6 +34,7 @@ func GetCookie() string {
 }
 
 func SetCookie(s string) {
+	s = strings.TrimSpace(s)
 	lock.Lock()
 	err := os.WriteFile(CookieFilePath, []byte(s), 0644)
 	if err != nil {
@@ -54,5 +55,5 @@ func readCookieFile() string {
 		log.Printf("can not read cookie file: %v", err)
 		return ""
 	}
-	return string(data)
+	return strings.TrimSpace(string(data))
 }
