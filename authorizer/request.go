@@ -2,7 +2,7 @@ package authorizer
 
 import (
 	"io.github.clouderhem.micloud/authorizer/cookie"
-	"io.github.clouderhem.micloud/cloud/setting/renewal"
+	"io.github.clouderhem.micloud/cloud/status/setting"
 	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
 	"log"
@@ -19,7 +19,7 @@ func DoRequest(req *http.Request) ([]byte, *http.Response, error) {
 		if err != nil {
 			continue
 		}
-		c, err := renewal.Renewal()
+		c, err := setting.Renewal()
 		if err != nil || c == "" {
 			log.Print("cannot renewal cookie, err: ", err)
 			return body, resp, err

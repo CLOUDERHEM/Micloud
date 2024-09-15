@@ -1,4 +1,4 @@
-package renewal
+package setting
 
 import (
 	"errors"
