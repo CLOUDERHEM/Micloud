@@ -78,7 +78,7 @@ func GetGalleryFileUrl(id string) (string, error) {
 func DeleteGallery(id string) error {
 	q := []request.UrlQuery{
 		{"id", id},
-		{"serviceToken", cookie.GetCookieByName("serviceToken")},
+		{"serviceToken", cookie.GetValue("serviceToken")},
 	}
 
 	body, r, err := authorizer.DoRequest(request.NewGet(deleteGalleryApi, q))

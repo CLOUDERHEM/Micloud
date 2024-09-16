@@ -2,6 +2,7 @@ package cookie
 
 import (
 	"io.github.clouderhem.micloud/consts"
+	"io.github.clouderhem.micloud/utility/parse"
 	"log"
 	"os"
 	"strings"
@@ -10,20 +11,8 @@ import (
 
 var lock sync.Mutex
 
-func GetCookieByName(name string) string {
-	cookies := strings.Split(GetCookie(), ";")
-	for i := range cookies {
-		kv := strings.Split(cookies[i], "=")
-		if len(kv) < 2 {
-			continue
-		}
-		k := strings.TrimSpace(kv[0])
-		v := strings.Join(kv[1:], "=")
-		if k == name {
-			return v
-		}
-	}
-	return ""
+func GetValue(name string) string {
+	return parse.GetValueByKey(GetCookie(), name)
 }
 
 func GetCookie() string {

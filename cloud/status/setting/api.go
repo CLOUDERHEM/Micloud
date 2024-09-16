@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer/cookie"
+	"io.github.clouderhem.micloud/utility/parse"
 	"io.github.clouderhem.micloud/utility/request"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -29,6 +31,11 @@ func Renewal() (string, error) {
 		return "", errors.New(http.StatusText(r.StatusCode))
 	}
 
-	return strings.Join(r.Header.Values("Set-Cookie"), ";"), nil
+	c := strings.Join(r.Header.Values("Set-Cookie"), ";")
+	token := parse.GetValueByKey(c, "serviceToken")
+	if token == "" {
+		log.Print("serviceToken is empty, do not need to renew")
+	}
+	return c, nil
 
 }

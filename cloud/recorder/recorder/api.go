@@ -82,7 +82,7 @@ func DeleteRecorder(id string) error {
 		"application/x-www-form-urlencoded; charset=UTF-8")
 	_ = req.ParseForm()
 	req.Form.Add("permanent", "false")
-	req.Form.Add("serviceToken", cookie.GetCookieByName("serviceToken"))
+	req.Form.Add("serviceToken", cookie.GetValue("serviceToken"))
 
 	body, r, err := authorizer.DoRequest(req)
 	if err != nil {
