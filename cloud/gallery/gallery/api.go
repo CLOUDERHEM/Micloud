@@ -1,14 +1,11 @@
 package gallery
 
 import (
-	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
 	"io.github.clouderhem.micloud/authorizer/cookie"
-	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
-	"io.github.clouderhem.micloud/utility/response"
-	"net/http"
+	"io.github.clouderhem.micloud/utility/validate"
 	"strconv"
 	"time"
 )
@@ -34,19 +31,7 @@ func ListGalleries(query GalleriesQuery) (Galleries, error) {
 	if err != nil {
 		return Galleries{}, err
 	}
-
-	if r.StatusCode != http.StatusOK {
-		return Galleries{}, errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[Galleries](body)
-	if err != nil {
-		return Galleries{}, err
-	}
-	if resp.Code != consts.Success {
-		return Galleries{}, errors.New(resp.Description)
-	}
-	return resp.Data, nil
+	return validate.Validate[Galleries](r, body)
 }
 
 func GetGalleryFileUrl(id string) (string, error) {
@@ -61,18 +46,11 @@ func GetGalleryFileUrl(id string) (string, error) {
 		return "", err
 	}
 
-	if r.StatusCode != http.StatusOK {
-		return "", errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[GalleryFile](body)
+	data, err := validate.Validate[GalleryFile](r, body)
 	if err != nil {
 		return "", err
 	}
-	if resp.Code != consts.Success {
-		return "", errors.New(resp.Description)
-	}
-	return resp.Data.Url, nil
+	return data.Url, nil
 }
 
 func DeleteGallery(id string) error {
@@ -86,16 +64,9 @@ func DeleteGallery(id string) error {
 		return err
 	}
 
-	if r.StatusCode != http.StatusOK {
-		return errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[GalleryFile](body)
+	_, err = validate.Validate[GalleryFile](r, body)
 	if err != nil {
 		return err
-	}
-	if resp.Code != consts.Success {
-		return errors.New(resp.Description)
 	}
 	return nil
 }

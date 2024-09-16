@@ -4,8 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
-	"io.github.clouderhem.micloud/consts"
-	"io.github.clouderhem.micloud/utility/response"
+	"io.github.clouderhem.micloud/utility/validate"
 	"net/http"
 	"time"
 )
@@ -29,12 +28,9 @@ func ListDevices() ([]Device, error) {
 		return nil, errors.New(http.StatusText(r.StatusCode))
 	}
 
-	resp, err := response.Parse[Devices](body)
+	data, err := validate.Validate[Devices](r, body)
 	if err != nil {
 		return nil, err
 	}
-	if resp.Code != consts.Success {
-		return nil, errors.New(resp.Description)
-	}
-	return resp.Data.List, nil
+	return data.List, err
 }

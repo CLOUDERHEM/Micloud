@@ -1,12 +1,10 @@
 package note
 
 import (
-	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
 	"io.github.clouderhem.micloud/authorizer/cookie"
-	"io.github.clouderhem.micloud/consts"
-	"io.github.clouderhem.micloud/utility/response"
+	"io.github.clouderhem.micloud/utility/validate"
 	"net/http"
 	"strconv"
 	"time"
@@ -28,18 +26,7 @@ func ListNotes(limit int) (Notes, error) {
 	if err != nil {
 		return Notes{}, err
 	}
-	if r.StatusCode != http.StatusOK {
-		return Notes{}, errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[Notes](body)
-	if err != nil {
-		return Notes{}, err
-	}
-	if resp.Code != consts.Success {
-		return Notes{}, errors.New(resp.Description)
-	}
-	return resp.Data, nil
+	return validate.Validate[Notes](r, body)
 }
 
 func GetNote(id string) (Note, error) {
@@ -52,18 +39,7 @@ func GetNote(id string) (Note, error) {
 	if err != nil {
 		return Note{}, err
 	}
-	if r.StatusCode != http.StatusOK {
-		return Note{}, errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[EntryNote](body)
-	if err != nil {
-		return Note{}, err
-	}
-	if resp.Code != consts.Success {
-		return Note{}, errors.New(resp.Description)
-	}
-	return resp.Data.Entry, nil
+	return validate.Validate[Note](r, body)
 }
 
 func DeleteNote(id, tag string, purge bool) error {
@@ -82,17 +58,10 @@ func DeleteNote(id, tag string, purge bool) error {
 	if err != nil {
 		return err
 	}
-	if r.StatusCode != http.StatusOK {
-		return errors.New(http.StatusText(r.StatusCode))
-	}
 
-	resp, err := response.Parse[struct{}](body)
+	_, err = validate.Validate[struct{}](r, body)
 	if err != nil {
 		return err
-	}
-
-	if resp.Code != consts.Success {
-		return errors.New(resp.Description)
 	}
 	return nil
 }

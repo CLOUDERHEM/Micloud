@@ -1,13 +1,10 @@
 package contact
 
 import (
-	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
-	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
-	"io.github.clouderhem.micloud/utility/response"
-	"net/http"
+	"io.github.clouderhem.micloud/utility/validate"
 	"strconv"
 	"time"
 )
@@ -30,17 +27,5 @@ func ListContacts(limit int) (Contacts, error) {
 	if err != nil {
 		return Contacts{}, err
 	}
-
-	if r.StatusCode != http.StatusOK {
-		return Contacts{}, errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[Contacts](body)
-	if err != nil {
-		return Contacts{}, err
-	}
-	if resp.Code != consts.Success {
-		return Contacts{}, errors.New(resp.Description)
-	}
-	return resp.Data, nil
+	return validate.Validate[Contacts](r, body)
 }

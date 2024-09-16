@@ -1,13 +1,11 @@
 package recorder
 
 import (
-	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
 	"io.github.clouderhem.micloud/authorizer/cookie"
-	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
-	"io.github.clouderhem.micloud/utility/response"
+	"io.github.clouderhem.micloud/utility/validate"
 	"net/http"
 	"strconv"
 	"time"
@@ -32,18 +30,12 @@ func ListRecorders(offset, limit int) ([]Recorder, error) {
 	if err != nil {
 		return nil, err
 	}
-	if r.StatusCode != http.StatusOK {
-		return nil, errors.New(http.StatusText(r.StatusCode))
-	}
 
-	resp, err := response.Parse[Recorders](body)
+	data, err := validate.Validate[Recorders](r, body)
 	if err != nil {
 		return nil, err
 	}
-	if resp.Code != consts.Success {
-		return nil, errors.New(resp.Description)
-	}
-	return resp.Data.List, nil
+	return data.List, err
 }
 
 func GetRecorderUrl(id string) (string, error) {
@@ -58,18 +50,11 @@ func GetRecorderUrl(id string) (string, error) {
 		return "", err
 	}
 
-	if r.StatusCode != http.StatusOK {
-		return "", errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[RecorderFile](body)
+	data, err := validate.Validate[RecorderFile](r, body)
 	if err != nil {
 		return "", err
 	}
-	if resp.Code != consts.Success {
-		return "", errors.New(resp.Description)
-	}
-	return resp.Data.Url, nil
+	return data.Url, nil
 }
 
 func DeleteRecorder(id string) error {
@@ -88,17 +73,10 @@ func DeleteRecorder(id string) error {
 	if err != nil {
 		return err
 	}
-	if r.StatusCode != http.StatusOK {
-		return errors.New(http.StatusText(r.StatusCode))
-	}
 
-	resp, err := response.Parse[struct{}](body)
+	_, err = validate.Validate[struct{}](r, body)
 	if err != nil {
 		return err
-	}
-
-	if resp.Code != consts.Success {
-		return errors.New(resp.Description)
 	}
 	return nil
 }

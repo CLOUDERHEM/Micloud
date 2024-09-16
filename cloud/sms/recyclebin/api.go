@@ -1,14 +1,11 @@
 package recyclebin
 
 import (
-	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
 	"io.github.clouderhem.micloud/cloud/sms/message"
-	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
-	"io.github.clouderhem.micloud/utility/response"
-	"net/http"
+	"io.github.clouderhem.micloud/utility/validate"
 	"strconv"
 	"time"
 )
@@ -33,17 +30,5 @@ func ListDeletedMessages(syncTag, syncThreadTag string, limit int) (message.Mess
 	if err != nil {
 		return message.Messages{}, err
 	}
-
-	if r.StatusCode != http.StatusOK {
-		return message.Messages{}, errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[message.Messages](body)
-	if err != nil {
-		return message.Messages{}, err
-	}
-	if resp.Code != consts.Success {
-		return message.Messages{}, errors.New(resp.Description)
-	}
-	return resp.Data, nil
+	return validate.Validate[message.Messages](r, body)
 }

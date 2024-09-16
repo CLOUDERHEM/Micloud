@@ -1,14 +1,11 @@
 package recyclebin
 
 import (
-	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
 	"io.github.clouderhem.micloud/cloud/note/note"
-	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
-	"io.github.clouderhem.micloud/utility/response"
-	"net/http"
+	"io.github.clouderhem.micloud/utility/validate"
 	"strconv"
 	"time"
 )
@@ -30,16 +27,5 @@ func ListDeletedNotes(syncTag string, limit int) (note.Notes, error) {
 		return note.Notes{}, err
 	}
 
-	if r.StatusCode != http.StatusOK {
-		return note.Notes{}, errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[note.Notes](body)
-	if err != nil {
-		return note.Notes{}, err
-	}
-	if resp.Code != consts.Success {
-		return note.Notes{}, errors.New(resp.Description)
-	}
-	return resp.Data, nil
+	return validate.Validate[note.Notes](r, body)
 }

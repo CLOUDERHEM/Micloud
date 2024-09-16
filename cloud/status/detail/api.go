@@ -1,11 +1,9 @@
 package detail
 
 import (
-	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
-	"io.github.clouderhem.micloud/consts"
-	"io.github.clouderhem.micloud/utility/response"
+	"io.github.clouderhem.micloud/utility/validate"
 	"net/http"
 	"time"
 )
@@ -24,17 +22,5 @@ func GetAllDetail() (Detail, error) {
 	if err != nil {
 		return Detail{}, nil
 	}
-
-	if r.StatusCode != http.StatusOK {
-		return Detail{}, errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[Detail](body)
-	if err != nil {
-		return Detail{}, nil
-	}
-	if resp.Code != consts.Success {
-		return Detail{}, errors.New(resp.Description)
-	}
-	return resp.Data, nil
+	return validate.Validate[Detail](r, body)
 }

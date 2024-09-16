@@ -1,13 +1,10 @@
 package message
 
 import (
-	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
-	"io.github.clouderhem.micloud/consts"
 	"io.github.clouderhem.micloud/utility/request"
-	"io.github.clouderhem.micloud/utility/response"
-	"net/http"
+	"io.github.clouderhem.micloud/utility/validate"
 	"strconv"
 	"time"
 )
@@ -32,17 +29,5 @@ func ListMessages(syncTag, syncThreadTag string, limit int) (Messages, error) {
 	if err != nil {
 		return Messages{}, err
 	}
-
-	if r.StatusCode != http.StatusOK {
-		return Messages{}, errors.New(http.StatusText(r.StatusCode))
-	}
-
-	resp, err := response.Parse[Messages](body)
-	if err != nil {
-		return Messages{}, err
-	}
-	if resp.Code != consts.Success {
-		return Messages{}, errors.New(resp.Description)
-	}
-	return resp.Data, nil
+	return validate.Validate[Messages](r, body)
 }
