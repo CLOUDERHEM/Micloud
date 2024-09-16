@@ -3,7 +3,7 @@
 ## Overview
 
 This project provides a simple interface for interacting with the Xiaomi Cloud Service API. It enables users to easily
-access various services and functionalities offered by Xiaomi Cloud.
+access various services and functionalities offered by [Xiaomi Cloud](https://i.mi.com).
 
 ## Usage
 
