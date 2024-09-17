@@ -39,7 +39,11 @@ func GetNote(id string) (Note, error) {
 	if err != nil {
 		return Note{}, err
 	}
-	return validate.Validate[Note](r, body)
+	data, err := validate.Validate[EntryNote](r, body)
+	if err != nil {
+		return Note{}, err
+	}
+	return data.Entry, err
 }
 
 func DeleteNote(id, tag string, purge bool) error {
