@@ -4,12 +4,12 @@ import (
 	"sync"
 )
 
-type ErrOut struct {
-	In  any
+type ErrOut[T any] struct {
+	In  T
 	Err error
 }
 
-func DoParallel[In any, Out any](ins []In, exec func(In) ([]Out, error)) ([]Out, []ErrOut) {
+func DoParallel[In any, Out any](ins []In, exec func(In) (Out, error)) ([]Out, []ErrOut[In]) {
 	if len(ins) == 0 {
 		return nil, nil
 	}
@@ -19,7 +19,7 @@ func DoParallel[In any, Out any](ins []In, exec func(In) ([]Out, error)) ([]Out,
 	s := make([]Out, 0, len(ins))
 	sLock := sync.Mutex{}
 
-	var e []ErrOut
+	var e []ErrOut[In]
 	eLock := sync.Mutex{}
 
 	for _, in := range ins {
@@ -28,11 +28,11 @@ func DoParallel[In any, Out any](ins []In, exec func(In) ([]Out, error)) ([]Out,
 			out, err := exec(i)
 			if err != nil {
 				eLock.Lock()
-				e = append(e, ErrOut{i, err})
+				e = append(e, ErrOut[In]{i, err})
 				eLock.Unlock()
 			}
 			sLock.Lock()
-			s = append(s, out...)
+			s = append(s, out)
 			sLock.Unlock()
 		}(in)
 	}
