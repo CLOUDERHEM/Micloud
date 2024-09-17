@@ -1,4 +1,4 @@
-package contact
+package contactmgr
 
 import "io.github.clouderhem.micloud/cloud/contact/contact"
 

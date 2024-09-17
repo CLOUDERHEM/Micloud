@@ -1,4 +1,4 @@
-package recorder
+package recordermgr
 
 import "io.github.clouderhem.micloud/cloud/recorder/recorder"
 

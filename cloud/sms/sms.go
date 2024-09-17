@@ -1,4 +1,4 @@
-package sms
+package smsmgr
 
 import (
 	"io.github.clouderhem.micloud/cloud/sms/message"
