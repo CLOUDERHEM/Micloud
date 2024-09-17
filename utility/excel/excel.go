@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/xuri/excelize/v2"
 	"log"
+	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -82,14 +84,21 @@ func (e *Excel) Save() error {
 	defer func(file *excelize.File) {
 		_ = file.Close()
 	}(e.file)
-	err := e.setRows()
+
+	err := os.MkdirAll(filepath.Dir(e.Filepath), os.ModePerm)
 	if err != nil {
 		return err
 	}
+	err = e.setRows()
+	if err != nil {
+		return err
+	}
+
 	err = e.file.SaveAs(e.Filepath)
 	if err != nil {
-		log.Print("cannot save to Excel, try another Filepath: err: ", err)
-		err := e.file.SaveAs(fmt.Sprintf("%v.tmp.%v", e.Filepath, time.Now().UnixMilli()))
+		e.Filepath = fmt.Sprintf("%v.%v.xlsx", e.Filepath, time.Now().Unix())
+		log.Printf("canot save excel file, try new filepath: %v, err: %v", e.Filepath, err)
+		err := e.file.SaveAs(e.Filepath)
 		if err != nil {
 			return err
 		}
