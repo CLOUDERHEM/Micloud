@@ -9,6 +9,8 @@ import (
 	"sync"
 )
 
+var GlobalCookie = ""
+
 var lock sync.Mutex
 
 func GetValue(name string) string {
@@ -16,12 +18,20 @@ func GetValue(name string) string {
 }
 
 func GetCookie() string {
-	return readCookieFile()
+	if GlobalCookie != "" {
+		return GlobalCookie
+	}
+	c := readCookieFile()
+	lock.Lock()
+	GlobalCookie = c
+	lock.Unlock()
+	return GlobalCookie
 }
 
 func SetCookie(s string) {
 	s = strings.TrimSpace(s)
 	lock.Lock()
+	GlobalCookie = s
 	err := os.WriteFile(consts.MicloudCookieFilePath, []byte(s), 0644)
 	if err != nil {
 		log.Printf("can not create cookie file: %v", err)

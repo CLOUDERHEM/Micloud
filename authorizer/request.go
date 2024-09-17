@@ -19,14 +19,14 @@ func DoRequest(req *http.Request) ([]byte, *http.Response, error) {
 		if err != nil {
 			continue
 		}
-		c, err := setting.Renewal()
-		if err != nil || c == "" {
-			log.Print("cannot renewal cookie, err: ", err)
-			return body, resp, err
-		} else {
-			cookie.SetCookie(c)
-		}
 		if resp.StatusCode == http.StatusUnauthorized {
+			c, err := setting.Renewal()
+			if err != nil || c == "" {
+				log.Print("cannot renewal cookie, err: ", err)
+				return body, resp, err
+			} else {
+				cookie.SetCookie(c)
+			}
 			continue
 		}
 		break
