@@ -39,9 +39,10 @@ type Folder struct {
 }
 
 type Setting struct {
-	ThemeId    int   `json:"themeId"`
-	Version    int   `json:"version"`
-	StickyTime int64 `json:"stickyTime"`
+	Data       []File `json:"data"`
+	ThemeId    int    `json:"themeId"`
+	Version    int    `json:"version"`
+	StickyTime int64  `json:"stickyTime"`
 }
 
 type Notes struct {
@@ -53,4 +54,10 @@ type Notes struct {
 
 type EntryNote struct {
 	Entry Note `json:"entry"`
+}
+
+type File struct {
+	Digest   string `json:"digest"`
+	FileId   string `json:"fileId"`
+	MimeType string `json:"mimeType"`
 }

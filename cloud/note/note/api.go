@@ -1,9 +1,11 @@
 package note
 
 import (
+	"errors"
 	"fmt"
 	"io.github.clouderhem.micloud/authorizer"
 	"io.github.clouderhem.micloud/authorizer/cookie"
+	"io.github.clouderhem.micloud/utility/request"
 	"io.github.clouderhem.micloud/utility/validate"
 	"net/http"
 	"strconv"
@@ -14,6 +16,11 @@ const (
 	fullPageApi   = "https://i.mi.com/note/full/page/?limit=%v&ts=%v"
 	noteApi       = "https://i.mi.com/note/note/%v/?ts=%v"
 	deleteNoteApi = "https://i.mi.com/note/full/%v/delete"
+	fileApi       = "https://i.mi.com/file/full"
+)
+
+const (
+	FileType = "note_img"
 )
 
 func ListNotes(limit int) (Notes, error) {
@@ -68,4 +75,23 @@ func DeleteNote(id, tag string, purge bool) error {
 		return err
 	}
 	return nil
+}
+
+func GetNoteFileUrl(fileType, fileId string) (string, error) {
+	q := []request.UrlQuery{
+		{"type", fileType},
+		{"fileid", fileId},
+	}
+	_, r, err := authorizer.DoRequest(request.NewGet(fileApi, q))
+	if err != nil {
+		return "", err
+	}
+	if r.StatusCode != http.StatusFound {
+		return "", errors.New(http.StatusText(r.StatusCode))
+	}
+	l := r.Header.Get("Location")
+	if l == "" {
+		return "", errors.New("no Location header")
+	}
+	return l, nil
 }
