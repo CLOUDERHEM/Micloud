@@ -36,3 +36,8 @@ func DeleteNote(id, tag string, purge bool) error {
 func ListDeletedNotes(syncTag string, limit int) (note.Notes, error) {
 	return recyclebin.ListDeletedNotes(syncTag, limit)
 }
+
+// GetNoteFileUrl get file url in note, pic or record
+func GetNoteFileUrl(fileId string) (string, error) {
+	return note.GetNoteFileUrl(note.FileType, fileId)
+}
