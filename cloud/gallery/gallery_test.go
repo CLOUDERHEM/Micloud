@@ -1,4 +1,4 @@
-package gallery
+package gallerymgr
 
 import (
 	"fmt"
@@ -19,10 +19,10 @@ func TestListAlbums(t *testing.T) {
 
 func TestListGalleries(t *testing.T) {
 	galleries, err := ListGalleries(gallery.GalleriesQuery{
-		StartDate: 20240701,
-		EndDate:   202409,
+		StartDate: 20210226,
+		EndDate:   20210226,
 		PageNum:   0,
-		PageSize:  1,
+		PageSize:  10,
 		AlbumId:   "1",
 	})
 	if err != nil {

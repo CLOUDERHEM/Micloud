@@ -1,4 +1,4 @@
-package status
+package statusmgr
 
 import (
 	"io.github.clouderhem.micloud/cloud/status/detail"

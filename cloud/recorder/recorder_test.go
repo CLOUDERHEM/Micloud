@@ -1,4 +1,4 @@
-package recorder
+package recordermgr
 
 import (
 	"testing"

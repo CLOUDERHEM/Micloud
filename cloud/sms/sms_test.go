@@ -1,4 +1,4 @@
-package sms
+package smsmgr
 
 import (
 	"fmt"

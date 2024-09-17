@@ -1,4 +1,4 @@
-package gallery
+package gallerymgr
 
 import (
 	"errors"
