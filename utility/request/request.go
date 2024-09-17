@@ -13,6 +13,9 @@ type UrlQuery struct {
 
 func DoRequest(req *http.Request) (body []byte, resp *http.Response, err error) {
 	client := http.DefaultClient
+	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+		return http.ErrUseLastResponse
+	}
 	client.Timeout = consts.DefaultTimeout
 	defer client.CloseIdleConnections()
 
