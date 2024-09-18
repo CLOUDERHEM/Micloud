@@ -1,7 +1,6 @@
 package cookie
 
 import (
-	"github.com/clouderhem/micloud/consts"
 	"github.com/clouderhem/micloud/utility/parse"
 	"log"
 	"os"
@@ -9,9 +8,14 @@ import (
 	"sync"
 )
 
-var GlobalCookie = ""
+var (
+	cookieFilepath = "/micloud/.micloud_cookie"
+)
 
-var lock sync.Mutex
+var (
+	GlobalCookie = ""
+	lock         sync.Mutex
+)
 
 func GetValue(name string) string {
 	return parse.GetValueByKey(GetCookie(), name)
@@ -32,7 +36,7 @@ func SetCookie(s string) {
 	s = strings.TrimSpace(s)
 	lock.Lock()
 	GlobalCookie = s
-	err := os.WriteFile(consts.MicloudCookieFilePath, []byte(s), 0644)
+	err := os.WriteFile(cookieFilepath, []byte(s), 0644)
 	if err != nil {
 		log.Printf("can not create cookie file: %v", err)
 	}
@@ -40,9 +44,9 @@ func SetCookie(s string) {
 }
 
 func readCookieFile() string {
-	data, err := os.ReadFile(consts.MicloudCookieFilePath)
+	data, err := os.ReadFile(cookieFilepath)
 	if os.IsNotExist(err) {
-		err := os.WriteFile(consts.MicloudCookieFilePath, []byte(""), 0644)
+		err := os.WriteFile(cookieFilepath, []byte(""), 0644)
 		if err != nil {
 			log.Printf("can not create cookie file: %v", err)
 			return ""
@@ -52,4 +56,8 @@ func readCookieFile() string {
 		return ""
 	}
 	return strings.TrimSpace(string(data))
+}
+
+func SetCookieFilepath(path string) {
+	cookieFilepath = path
 }

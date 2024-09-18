@@ -1,7 +1,7 @@
 package request
 
 import (
-	"github.com/clouderhem/micloud/consts"
+	"github.com/clouderhem/micloud/config"
 	"io"
 	"net/http"
 )
@@ -16,7 +16,7 @@ func DoRequest(req *http.Request) (body []byte, resp *http.Response, err error) 
 	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
 		return http.ErrUseLastResponse
 	}
-	client.Timeout = consts.DefaultTimeout
+	client.Timeout = config.Timeout
 	defer client.CloseIdleConnections()
 
 	resp, err = client.Do(req)

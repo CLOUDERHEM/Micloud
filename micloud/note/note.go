@@ -1,7 +1,7 @@
 package notemgr
 
 import (
-	"github.com/clouderhem/micloud/consts"
+	"github.com/clouderhem/micloud/config"
 	"github.com/clouderhem/micloud/micloud/note/note"
 	"github.com/clouderhem/micloud/micloud/note/recyclebin"
 	"github.com/clouderhem/micloud/utility/parallel"
@@ -22,7 +22,7 @@ func ListFullNotes(noteIds []string) ([]note.Note, []parallel.ErrOut[string]) {
 	res, errs := parallel.DoParallel[string, note.Note](noteIds,
 		func(id string) (note.Note, error) {
 			time.Sleep(time.Second *
-				time.Duration((r.Intn(len(noteIds)/consts.DefaultReqNumInSec))+1))
+				time.Duration((r.Intn((len(noteIds)/int(config.NumOfReqInSec))+1))+1))
 			fullNote, err := note.GetNote(id)
 			return fullNote, err
 		})

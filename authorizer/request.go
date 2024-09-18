@@ -2,7 +2,7 @@ package authorizer
 
 import (
 	"github.com/clouderhem/micloud/authorizer/cookie"
-	"github.com/clouderhem/micloud/consts"
+	"github.com/clouderhem/micloud/config"
 	"github.com/clouderhem/micloud/micloud/status/setting"
 	"github.com/clouderhem/micloud/utility/request"
 	"log"
@@ -13,7 +13,7 @@ func DoRequest(req *http.Request) ([]byte, *http.Response, error) {
 	var body []byte
 	var resp *http.Response
 	var err error
-	for i := 0; i < consts.DefaultRetryTimes; i++ {
+	for i := 0; i < int(config.RetryTimes); i++ {
 		postProcessReq(req)
 		body, resp, err = request.DoRequest(req)
 		if err != nil {
