@@ -1,8 +1,8 @@
 package cookie
 
 import (
-	"io.github.clouderhem.micloud/consts"
-	"io.github.clouderhem.micloud/utility/parse"
+	"github.com/clouderhem/micloud/consts"
+	"github.com/clouderhem/micloud/utility/parse"
 	"log"
 	"os"
 	"strings"

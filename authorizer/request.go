@@ -1,10 +1,10 @@
 package authorizer
 
 import (
-	"io.github.clouderhem.micloud/authorizer/cookie"
-	"io.github.clouderhem.micloud/cloud/status/setting"
-	"io.github.clouderhem.micloud/consts"
-	"io.github.clouderhem.micloud/utility/request"
+	"github.com/clouderhem/micloud/authorizer/cookie"
+	"github.com/clouderhem/micloud/consts"
+	"github.com/clouderhem/micloud/micloud/status/setting"
+	"github.com/clouderhem/micloud/utility/request"
 	"log"
 	"net/http"
 )

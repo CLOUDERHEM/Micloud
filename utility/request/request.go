@@ -1,8 +1,8 @@
 package request
 
 import (
+	"github.com/clouderhem/micloud/consts"
 	"io"
-	"io.github.clouderhem.micloud/consts"
 	"net/http"
 )
 

@@ -3,8 +3,8 @@ package validate
 import (
 	"errors"
 	"fmt"
-	"io.github.clouderhem.micloud/consts"
-	"io.github.clouderhem.micloud/utility/response"
+	"github.com/clouderhem/micloud/consts"
+	"github.com/clouderhem/micloud/utility/response"
 	"net/http"
 )
 
