@@ -5,23 +5,17 @@ type Content struct {
 	Id          string `json:"id"`
 	Name        struct {
 		Formatted string `json:"formatted"`
-		GivenName string `json:"givenName"`
 	} `json:"name"`
 	PhoneNumbers []PhoneNumber `json:"phoneNumbers"`
-	CreateTime   int64         `json:"createTime"`
-	Pinyin       string        `json:"pinyin"`
-	Type         string        `json:"type"`
-	UpdateTime   int64         `json:"updateTime"`
-}
-
-type PhoneNumber struct {
-	Primary bool   `json:"primary"`
-	Type    string `json:"type"`
-	Value   string `json:"value"`
 
 	Starred bool   `json:"starred"`
 	Status  string `json:"status"`
 	Tag     string `json:"tag"`
+}
+
+type PhoneNumber struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
 }
 
 type Contacts struct {
