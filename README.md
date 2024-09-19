@@ -30,4 +30,4 @@ the [LICENSE](https://github.com/CLOUDERHEM/Micloud/blob/main/LICENSE) file for 
 
 ## Contact
 
-For any questions or suggestions, please start a issuse
+For any questions or suggestions, please start a issue
