@@ -3,7 +3,7 @@ package authorizer
 import (
 	"github.com/clouderhem/micloud/authorizer/cookie"
 	"github.com/clouderhem/micloud/config"
-	"github.com/clouderhem/micloud/micloud/status/setting"
+	"github.com/clouderhem/micloud/miaccount"
 	"github.com/clouderhem/micloud/utility/request"
 	"log"
 	"net/http"
@@ -20,12 +20,12 @@ func DoRequest(req *http.Request) ([]byte, *http.Response, error) {
 			continue
 		}
 		if resp.StatusCode == http.StatusUnauthorized {
-			c, err := setting.Renewal()
+			c, err := miaccount.GetMicloudCookie()
 			if err != nil || c == "" {
-				log.Print("cannot renewal cookie, err: ", err)
+				log.Print("cannot renewal micloud cookie, err: ", err)
 				return body, resp, err
 			} else {
-				cookie.SetCookie(c)
+				cookie.SetMicloudCookie(c)
 			}
 			continue
 		}
@@ -36,7 +36,7 @@ func DoRequest(req *http.Request) ([]byte, *http.Response, error) {
 }
 
 func postProcessReq(req *http.Request) {
-	req.Header.Set("Cookie", cookie.GetCookie())
+	req.Header.Set("Cookie", cookie.GetMicloudCookie())
 	req.Header.Set("Sec-Ch-Ua", "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Google Chrome\";v=\"128\"")
 	req.Header.Set("Sec-Ch-Ua-Mobile", "?0")
 	req.Header.Set("Sec-Ch-Ua-Platform", "\"Windows\"")

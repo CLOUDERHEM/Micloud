@@ -63,7 +63,7 @@ func DeleteNote(id, tag string, purge bool) error {
 	_ = req.ParseForm()
 	req.Form.Add("tag", tag)
 	req.Form.Add("purge", strconv.FormatBool(purge))
-	req.Form.Add("serviceToken", cookie.GetValue("serviceToken"))
+	req.Form.Add("serviceToken", cookie.GetValueFromMicloudCookie("serviceToken"))
 
 	body, r, err := authorizer.DoRequest(req)
 	if err != nil {

@@ -8,17 +8,18 @@ import (
 )
 
 type Config struct {
-	CookieFilepath string
-	Timeout        time.Duration
-	RetryTimes     uint
-	NumOfReqInSec  uint
+	MiaccountCookieFilePath string
+	MicloudCookieFilePath   string
+	Timeout                 time.Duration
+	RetryTimes              uint
+	NumOfReqInSec           uint
 }
 
 func Init(c Config) error {
-	if c.CookieFilepath == "" {
-		return errors.New("no cookie file path")
+	if c.MiaccountCookieFilePath == "" {
+		return errors.New("no mi account cookie file path")
 	} else {
-		cookie.SetCookieFilepath(c.CookieFilepath)
+		cookie.MiaccountCookieFilepath = c.MiaccountCookieFilePath
 	}
 	if c.Timeout != 0 {
 		config.Timeout = c.Timeout

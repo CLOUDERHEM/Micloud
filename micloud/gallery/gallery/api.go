@@ -56,7 +56,7 @@ func GetGalleryFileUrl(id string) (string, error) {
 func DeleteGallery(id string) error {
 	q := []request.UrlQuery{
 		{"id", id},
-		{"serviceToken", cookie.GetValue("serviceToken")},
+		{"serviceToken", cookie.GetValueFromMicloudCookie("serviceToken")},
 	}
 
 	body, r, err := authorizer.DoRequest(request.NewGet(deleteGalleryApi, q))

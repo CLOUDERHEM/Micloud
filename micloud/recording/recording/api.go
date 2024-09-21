@@ -67,7 +67,7 @@ func DeleteRecording(id string) error {
 		"application/x-www-form-urlencoded; charset=UTF-8")
 	_ = req.ParseForm()
 	req.Form.Add("permanent", "false")
-	req.Form.Add("serviceToken", cookie.GetValue("serviceToken"))
+	req.Form.Add("serviceToken", cookie.GetValueFromMicloudCookie("serviceToken"))
 
 	body, r, err := authorizer.DoRequest(req)
 	if err != nil {

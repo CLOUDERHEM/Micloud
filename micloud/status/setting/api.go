@@ -21,7 +21,7 @@ func Renewal() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	req.Header.Add("Cookie", cookie.GetCookie())
+	req.Header.Add("Cookie", cookie.GetMicloudCookie())
 	_, r, err := request.DoRequest(req)
 	if err != nil {
 		return "", err
