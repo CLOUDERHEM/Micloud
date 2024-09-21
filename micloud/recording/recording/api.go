@@ -1,4 +1,4 @@
-package recorder
+package recording
 
 import (
 	"fmt"
@@ -12,12 +12,12 @@ import (
 )
 
 const (
-	listRecorderApi  = "https://i.mi.com/sfs/ns/recorder/dir/0/list"
-	getRecordFileApi = "https://i.mi.com/sfs/ns/recorder/file/%v/storage/geturl?ts=%v"
-	deleteRecordApi  = "https://i.mi.com/sfs/ns/recorder/file/%v/delete?ts=%v"
+	listRecordingsApi   = "https://i.mi.com/sfs/ns/recorder/dir/0/list"
+	getRecordingFileApi = "https://i.mi.com/sfs/ns/recorder/file/%v/storage/geturl?ts=%v"
+	deleteRecordApi     = "https://i.mi.com/sfs/ns/recorder/file/%v/delete?ts=%v"
 )
 
-func ListRecorders(offset, limit int) ([]Recorder, error) {
+func ListRecordings(offset, limit int) ([]Recording, error) {
 	ts := fmt.Sprintf("%d", time.Now().UnixMilli())
 	q := []request.UrlQuery{
 		{"offset", strconv.Itoa(offset)},
@@ -26,21 +26,21 @@ func ListRecorders(offset, limit int) ([]Recorder, error) {
 		{"_dc", ts},
 	}
 
-	body, r, err := authorizer.DoRequest(request.NewGet(listRecorderApi, q))
+	body, r, err := authorizer.DoRequest(request.NewGet(listRecordingsApi, q))
 	if err != nil {
 		return nil, err
 	}
 
-	data, err := validate.Validate[Recorders](r, body)
+	data, err := validate.Validate[Recordings](r, body)
 	if err != nil {
 		return nil, err
 	}
 	return data.List, err
 }
 
-func GetRecorderUrl(id string) (string, error) {
+func GetRecordingFileUrl(id string) (string, error) {
 	req, err := http.NewRequest(http.MethodGet,
-		fmt.Sprintf(getRecordFileApi, id, time.Now().UnixMilli()), nil)
+		fmt.Sprintf(getRecordingFileApi, id, time.Now().UnixMilli()), nil)
 	if err != nil {
 		return "", err
 	}
@@ -50,14 +50,14 @@ func GetRecorderUrl(id string) (string, error) {
 		return "", err
 	}
 
-	data, err := validate.Validate[RecorderFile](r, body)
+	data, err := validate.Validate[RecordingFile](r, body)
 	if err != nil {
 		return "", err
 	}
 	return data.Url, nil
 }
 
-func DeleteRecorder(id string) error {
+func DeleteRecording(id string) error {
 	req, err := http.NewRequest(http.MethodPost,
 		fmt.Sprintf(deleteRecordApi, id, time.Now().UnixMilli()), nil)
 	if err != nil {

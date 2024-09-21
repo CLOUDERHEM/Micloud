@@ -1,6 +1,6 @@
-package recorder
+package recording
 
-type Recorder struct {
+type Recording struct {
 	Id       string `json:"id"`
 	Name     string `json:"name"`
 	Type     string `json:"type"`
@@ -13,10 +13,10 @@ type Recorder struct {
 	ModifyTime int64 `json:"modify_time"`
 }
 
-type Recorders struct {
-	List []Recorder `json:"list"`
+type Recordings struct {
+	List []Recording `json:"list"`
 }
 
-type RecorderFile struct {
+type RecordingFile struct {
 	Url string `json:"url"`
 }
