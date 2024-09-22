@@ -12,24 +12,12 @@ type UrlQuery struct {
 }
 
 func DoRequest(req *http.Request) (body []byte, resp *http.Response, err error) {
-	client := http.DefaultClient
-	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
-		return http.ErrUseLastResponse
-	}
-	client.Timeout = config.Timeout
-	defer client.CloseIdleConnections()
+	return doRequest(req, true)
+}
 
-	resp, err = client.Do(req)
-	if err != nil {
-		return nil, nil, err
-	}
-	defer resp.Body.Close()
-
-	data, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, nil, err
-	}
-	return data, resp, nil
+func DoRequestNotReadBody(req *http.Request) (resp *http.Response, err error) {
+	_, resp, err = doRequest(req, false)
+	return
 }
 
 func NewGet(url string, queries []UrlQuery) *http.Request {
@@ -42,4 +30,25 @@ func NewGet(url string, queries []UrlQuery) *http.Request {
 	req.URL.RawQuery = q.Encode()
 
 	return req
+}
+
+func doRequest(req *http.Request, readBody bool) (body []byte, resp *http.Response, err error) {
+	client := http.DefaultClient
+	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+		return http.ErrUseLastResponse
+	}
+	client.Timeout = config.Timeout
+	defer client.CloseIdleConnections()
+
+	resp, err = client.Do(req)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	if readBody {
+		defer resp.Body.Close()
+		data, err := io.ReadAll(resp.Body)
+		return data, resp, err
+	}
+	return nil, resp, nil
 }
