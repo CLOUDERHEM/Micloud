@@ -43,6 +43,7 @@ func GetGalleryStorageUrl(id string) (string, error) {
 	q := []request.UrlQuery{
 		{"ts", ts},
 		{"id", id},
+		{"callBack", fmt.Sprintf("dl_img_cb_%s_0", ts)},
 	}
 
 	body, r, err := authorizer.DoRequest(request.NewGet(storageApi, q))
