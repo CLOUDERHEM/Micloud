@@ -85,6 +85,11 @@ type GalleriesQuery struct {
 	AlbumId string `json:"albumId"`
 }
 
-type GalleryFile struct {
+type StorageFile struct {
 	Url string `json:"url"`
+}
+
+type GalleryFile struct {
+	Url  string `json:"url"`
+	Meta string `json:"meta"`
 }

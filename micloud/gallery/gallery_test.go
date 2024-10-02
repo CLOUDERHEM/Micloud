@@ -53,7 +53,7 @@ func TestDeleteGallery(t *testing.T) {
 }
 
 func TestGetGalleryFileUrl(t *testing.T) {
-	url, err := GetGalleryFileUrl("1")
+	url, err := GetGalleryStorageUrl("1")
 	if err != nil {
 		t.Error(err)
 	}
